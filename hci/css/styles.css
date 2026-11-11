@@ -1,0 +1,476 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  --bg: #F7F3EE;            /* warm cream */
+  --surface: #FFFFFF;
+  --surface-soft: #FBF9F6;
+  --media-bg: #ECE7E0;      /* product image background */
+  --beige: #EAE2D7;         /* icon tiles, accents */
+  --line: #E7E0D6;
+  --text: #1C1916;
+  --text-muted: #8A827A;
+  --primary: #3A322C;       /* dark espresso buttons */
+  --primary-pressed: #2A2420;
+  --on-primary: #FFFFFF;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(58, 50, 44, 0.04), 0 6px 18px rgba(58, 50, 44, 0.06);
+  --shadow-float: 0 2px 10px rgba(58, 50, 44, 0.14);
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --gutter: 20px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --app-max: 440px;
+}
+
+/* ==========================================================================
+   Base — lock the page so only intended areas scroll
+   (prevents pull-to-refresh, rubber-banding and accidental zoom)
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--bg);
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button { font: inherit; color: inherit; }
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.app {
+  position: relative;
+  height: 100%;
+  max-width: var(--app-max);
+  margin: 0 auto;
+  background: var(--bg);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* On desktop, frame the app like a phone so it looks the same as on mobile */
+@media (min-width: 600px) and (min-height: 700px) {
+  body { background: #EDE7DF; display: flex; align-items: center; justify-content: center; }
+  .app {
+    width: var(--app-max);
+    height: min(900px, calc(100% - 48px));
+    border-radius: 36px;
+    box-shadow: 0 10px 40px rgba(58, 50, 44, 0.14);
+    border: 1px solid var(--line);
+  }
+}
+
+/* ==========================================================================
+   Screens
+   ========================================================================== */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 16px) var(--gutter) calc(var(--safe-bottom) + 24px);
+}
+
+.screen--center { justify-content: center; text-align: center; }
+
+.screen__body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.screen__body--center { justify-content: center; align-items: center; text-align: center; }
+.screen__footer { padding-top: 16px; }
+
+/* Typography */
+.h1 {
+  font-size: 34px;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.lead {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+/* Icon tile (welcome) */
+.icon-tile {
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  background: var(--beige);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 28px;
+}
+.icon-tile svg { width: 48px; height: 48px; }
+
+/* Progress segments */
+.progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 8px 0 28px;
+}
+.progress span {
+  width: 34px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--line);
+}
+.progress span.is-on { background: var(--primary); }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 24px;
+  border-radius: var(--radius-md);
+  border: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:active { background: var(--primary-pressed); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--line);
+}
+.btn-secondary:active { background: var(--beige); }
+.btn + .btn { margin-top: 10px; }
+
+.text-link {
+  background: none;
+  border: 0;
+  padding: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+}
+.icon-btn svg { width: 22px; height: 22px; }
+.icon-btn:active { background: var(--beige); }
+
+/* ==========================================================================
+   Order selection
+   ========================================================================== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  margin: 0 -10px;
+}
+
+.options { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px;
+  background: var(--surface);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  cursor: pointer;
+}
+.option.is-selected { border-color: var(--primary); }
+.option__icon { width: 34px; height: 34px; flex: none; }
+.option__text { flex: 1; }
+.option__title { display: block; font-size: 17px; font-weight: 600; }
+.option__sub { display: block; font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+.option__detail { display: block; font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+.radio {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid #C9C1B6;
+  display: grid;
+  place-items: center;
+}
+.option.is-selected .radio { border-color: var(--primary); }
+.option.is-selected .radio::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.researcher-note {
+  margin-top: 18px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Instructions
+   ========================================================================== */
+.task-list { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-direction: column; gap: 26px; }
+.task-list li { display: flex; gap: 16px; align-items: flex-start; font-size: 17px; line-height: 1.45; }
+.task-list svg { width: 28px; height: 28px; flex: none; margin-top: 1px; }
+
+/* ==========================================================================
+   Browsing screens (shared by swipe + grid + detail)
+   ========================================================================== */
+.browse {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: var(--safe-top);
+}
+
+.browse-header {
+  flex: none;
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  align-items: center;
+  height: 56px;
+  padding: 0 8px;
+}
+.browse-header__title {
+  grid-column: 2;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.action-bar {
+  flex: none;
+  padding: 14px var(--gutter) 0;
+}
+
+.product-media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--media-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.product-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-info { text-align: center; padding: 18px var(--gutter) 0; }
+.product-name {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.product-price {
+  margin: 4px 0 0;
+  font-size: 17px;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* ---- Swipe ---- */
+.swipe-media,
+.swipe-info {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.swipe-media { flex: 1; min-height: 0; }
+.swipe-info { flex: none; }
+
+.swipe-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+.swipe-track.is-animating { transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1); }
+
+.swipe-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 44px;
+}
+.swipe-slide .product-media { height: 100%; max-width: 100%; }
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0;
+  transition: opacity 0.15s ease;
+}
+.nav-arrow svg { width: 22px; height: 22px; }
+.nav-arrow--prev { left: 16px; }
+.nav-arrow--next { right: 16px; }
+.nav-arrow:disabled { opacity: 0; pointer-events: none; }
+.nav-arrow:active { background: var(--beige); }
+
+/* ---- Grid ---- */
+.grid-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 4px var(--gutter) calc(var(--safe-bottom) + 24px);
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 14px;
+}
+.grid-card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.grid-card .product-media { border-radius: var(--radius-md); }
+.grid-card:active .product-media { opacity: 0.85; }
+.grid-card__name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.grid-card__price {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ---- Grid detail (covers the grid so the grid keeps its scroll position) ---- */
+.detail {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: var(--bg);
+}
+.detail-media {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 44px;
+}
+.detail-media .product-media { height: 100%; max-width: 100%; }
+
+/* ==========================================================================
+   Confirmation modal (identical for both conditions)
+   ========================================================================== */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(28, 25, 22, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 20px);
+}
+.modal {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--bg);
+  border-radius: 28px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(28, 25, 22, 0.25);
+}
+.modal .h2 { margin-bottom: 18px; font-size: 22px; }
+.modal-media {
+  width: min(62%, 220px);
+  margin: 0 auto;
+}
+.modal-media .product-media { border-radius: var(--radius-md); }
+.modal .product-info { padding: 16px 0 22px; }
