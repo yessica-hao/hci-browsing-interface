@@ -99,7 +99,7 @@
     return (
       '<div class="product-info">' +
         '<h2 class="product-name">' + esc(p.name) + "</h2>" +
-        '<p class="product-price">' + formatPrice(p.price) + "</p>" +
+        (DATA.showPrices ? '<p class="product-price">' + formatPrice(p.price) + "</p>" : "") +
       "</div>"
     );
   }
@@ -391,7 +391,7 @@
         '<button class="grid-card" data-id="' + esc(p.id) + '">' +
           mediaHTML(p, i < 6) +
           '<span class="grid-card__name">' + esc(p.name) + "</span>" +
-          '<span class="grid-card__price">' + formatPrice(p.price) + "</span>" +
+          (DATA.showPrices ? '<span class="grid-card__price">' + formatPrice(p.price) + "</span>" : "") +
         "</button>"
       );
     }).join("");
